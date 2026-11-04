@@ -1,0 +1,15 @@
+// Project settings for Zed: https://zed.dev/docs/configuring-zed#project-settings
+// Shared through git, the same way .vscode/settings.json is shared in VS Code.
+{
+  // Format on save with the project's Prettier (devDependency + .prettierrc.json).
+  "format_on_save": "on",
+  "formatter": "prettier",
+  "languages": {
+    "JavaScript": {
+      // Apply ESLint fixes (`eslint --fix`) together with formatting on save.
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    }
+  }
+}
