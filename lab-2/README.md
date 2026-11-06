@@ -29,7 +29,8 @@ App
 │   └── Avatar
 └── Card «Команда»
     ├── Profile
-    │   └── Avatar
+    │   ├── Avatar
+    │   └── Badge
     ├── Profile
     │   └── Avatar
     ├── Profile
@@ -49,7 +50,8 @@ main.jsx
     ├── components/Header.jsx
     ├── components/Avatar.jsx
     ├── components/Profile.jsx
-    │   └── components/Avatar.jsx
+    │   ├── components/Avatar.jsx
+    │   └── components/Badge.jsx
     ├── components/Card.jsx
     └── data.js
 ```
