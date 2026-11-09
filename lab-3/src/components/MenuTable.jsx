@@ -1,6 +1,6 @@
 import MenuCategory from './MenuCategory.jsx'
 
-export default function MenuTable({ menu }) {
+export default function MenuTable({ menu, inStockOnly }) {
   return (
     <table className="menu-table">
       <thead>
@@ -10,7 +10,11 @@ export default function MenuTable({ menu }) {
         </tr>
       </thead>
       {menu.map((category) => (
-        <MenuCategory key={category.id} category={category} />
+        <MenuCategory
+          key={category.id}
+          category={category}
+          inStockOnly={inStockOnly}
+        />
       ))}
     </table>
   )

@@ -9,7 +9,7 @@ export default function App() {
 
       <SearchBar />
 
-      <MenuTable menu={menu} />
+      <MenuTable menu={menu} inStockOnly={false} />
     </main>
   )
 }
