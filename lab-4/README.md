@@ -46,7 +46,8 @@ flowchart TD
 Під час введення тексту в поле пошуку React DevTools з увімкненим
 **Highlight updates when components render** обводила рамкою такі компоненти:
 
-**До:** `App`, `SearchBar`, `MenuTable`, `MenuCategory`, `MenuItemRow`.
+**До:** `App`, `SearchBar`, `MenuTable`, `MenuCategory`, `MenuItemRow`,
+`CafeInfo`.
 
 **Після:** `FilterableMenuTable`, `SearchBar`, `MenuTable`, `MenuCategory`,
 `MenuItemRow`.
