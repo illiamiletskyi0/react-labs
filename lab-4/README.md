@@ -24,18 +24,33 @@ https://denysmatsevych.github.io/web-development-2026/react/labs/lab-4/
 
 Діаграма потоку даних: суцільна стрілка — пропси, які батьківський компонент
 передає дочірньому; пунктирна — дані, що повертаються вгору через
-функцію-обробник, або запис у сховище поза React. Стан фільтрів живе в `App`,
-тому `SearchBar` отримує значення пропсами, а зміни повертає через обробники.
-GitHub показує цей блок діаграмою; перевірити її до `git push` можна в
-https://mermaid.live/.
+функцію-обробник, або запис у сховище поза React. Стан фільтрів живе в
+`FilterableMenuTable`, тому `SearchBar` отримує значення пропсами, а зміни
+повертає через обробники. GitHub показує цей блок діаграмою; перевірити її до
+`git push` можна в https://mermaid.live/.
 
 ```mermaid
 flowchart TD
-  App -->|"filterText, inStockOnly"| SearchBar
-  SearchBar -.->|"onFilterTextChange, onInStockOnlyChange"| App
-  App -->|"menu, filterText, inStockOnly"| MenuTable
+  App -->|menu| FilterableMenuTable
   App --> CafeInfo
+  FilterableMenuTable -->|"filterText, inStockOnly"| SearchBar
+  SearchBar -.->|"onFilterTextChange, onInStockOnlyChange"| FilterableMenuTable
+  FilterableMenuTable -->|"menu, filterText, inStockOnly"| MenuTable
   MenuTable -->|category| MenuCategory["MenuCategory × 3"]
   MenuCategory -->|item| MenuItemRow["MenuItemRow × 4, 3, 3"]
-  App -.->|setItem| LocalStorage[("localStorage")]
+  FilterableMenuTable -.->|setItem| LocalStorage[("localStorage")]
 ```
+
+## Колокація стану
+
+Під час введення тексту в поле пошуку React DevTools з увімкненим
+**Highlight updates when components render** обводила рамкою такі компоненти:
+
+**До:** `App`, `SearchBar`, `MenuTable`, `MenuCategory`, `MenuItemRow`.
+
+**Після:** `FilterableMenuTable`, `SearchBar`, `MenuTable`, `MenuCategory`,
+`MenuItemRow`.
+
+Після перенесення стану `App` і `CafeInfo` більше не рендеряться під час
+введення: зміна стану зачіпає лише компоненти, які показують фільтри або
+залежать від них.
