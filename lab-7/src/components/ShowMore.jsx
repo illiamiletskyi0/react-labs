@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useShowMore } from '../hooks/useShowMore.js'
 
 /**
  * Показує перші `step` елементів з `items` і кнопку, що показує наступні.
@@ -11,9 +11,10 @@ import { useState } from 'react'
  * Вимоги — у тестах tests/ShowMore.test.jsx.
  */
 export default function ShowMore({ items, step = 3, children }) {
-  const [count, setCount] = useState(step)
-  const visibleItems = items.slice(0, count)
-  const hiddenCount = items.length - visibleItems.length
+  const { visibleItems, hiddenCount, showMore, collapse } = useShowMore(
+    items,
+    step,
+  )
   const allShown = hiddenCount === 0
 
   return (
@@ -23,9 +24,7 @@ export default function ShowMore({ items, step = 3, children }) {
         <button
           type="button"
           className="show-more"
-          onClick={() =>
-            allShown ? setCount(step) : setCount((current) => current + step)
-          }
+          onClick={allShown ? collapse : showMore}
         >
           {allShown ? 'Згорнути' : `Показати ще ${Math.min(step, hiddenCount)}`}
         </button>
