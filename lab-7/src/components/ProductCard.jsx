@@ -12,9 +12,12 @@ export default function ProductCard({ product }) {
         {product.origin}, {product.roast}. Ноти: {product.notes.join(', ')}.
       </p>
       <GrindPicker />
-      <p className="price">
-        {product.price} грн <span>за {product.weight}</span>
-      </p>
+      <div className="product-price">
+        <p className="price">
+          {product.price} грн <span>за {product.weight}</span>
+        </p>
+        <FavoriteButton productId={product.id} name={product.name} />
+      </div>
     </article>
   )
 }
