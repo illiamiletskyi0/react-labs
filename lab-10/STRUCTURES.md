@@ -17,7 +17,7 @@
 | За маршрутами (§4.4)       | 3   | `src/app/`, `src/routes/cart/`, `src/shared/`                                                                                        |
 | За функціональністю (§4.5) | 6   | `src/app/`, `src/app/routes/cart/`, `src/features/cart/components/`, `src/features/product/components/`, `src/hooks/`, `src/stores/` |
 | FSD (§4.6)                 | 5   | `src/entities/cart/model/`, `src/entities/cart/ui/`, `src/features/add-to-cart/ui/`, `src/pages/cart/ui/`, `src/widgets/header/ui/`  |
-| Пакет (§4.9)               |     |                                                                                                                                      |
+| Пакет (§4.9)               | 5   | `packages/cart/state/`, `packages/cart/ui/`, `src/features/add-to-cart/ui/`, `src/pages/cart/ui/`, `src/widgets/header/ui/`          |
 
 ## Вибір структури
 

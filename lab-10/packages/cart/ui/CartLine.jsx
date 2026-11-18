@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import { useCart } from '../model/useCart.js'
+import { useCart } from '../state/useCart.js'
 
 export default function CartLine({ line }) {
   const { setQuantity, remove } = useCart()
