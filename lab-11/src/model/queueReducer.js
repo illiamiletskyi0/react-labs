@@ -1,10 +1,13 @@
 /**
  * Ред'юсер черги замовлень. Його написав колега; у нього черга працює.
  *
- * Стан: { orders: [...] }. Кожне замовлення — як у src/data/orders.js:
+ * Стан: { orders: [...], lastNumber: number }. Кожне замовлення — як у
+ * src/data/orders.js:
  *   { id, number, status, customer: { id, name }, items: [...] }
  * status — колонка на дошці: 'new' («Нові»), 'brewing' («Готуються»),
- * 'ready' («Готові») або 'served' («Видані»).
+ * 'ready' («Готові») або 'served' («Видані»). lastNumber — номер останнього
+ * виданого замовлення; він живе в стані, щоб ред'юсер був чистим, а номер
+ * скасованого замовлення не діставався новому.
  *
  * Дії — події на сторінці:
  *   { type: 'order_placed', order: { id, customer: { id, name }, items } }
@@ -27,33 +30,47 @@
 
 const nextStatus = { new: 'brewing', brewing: 'ready', ready: 'served' }
 
-// Номер останнього замовлення. У стані його не тримаємо: номери лише
-// ростуть, а номер скасованого замовлення новому не дістається.
-let lastNumber = 0
-
 /** Початковий стан черги з вкладених замовлень, як їх повертає loadOrders(). */
 export function createInitialState(orders) {
-  lastNumber = Math.max(...orders.map((order) => order.number))
-  return { orders }
+  const lastNumber = orders.reduce(
+    (max, order) => Math.max(max, order.number),
+    0,
+  )
+  return { orders, lastNumber }
 }
 
 export function queueReducer(state, action) {
   switch (action.type) {
     case 'order_placed': {
-      lastNumber += 1
+      const number = state.lastNumber + 1
       const order = {
         ...action.order,
-        number: lastNumber,
+        number,
         status: 'new',
         items: action.order.items.map((item) => ({ ...item, done: false })),
       }
-      return { ...state, orders: [...state.orders, order] }
+      return {
+        ...state,
+        lastNumber: number,
+        orders: [...state.orders, order],
+      }
     }
     case 'item_toggled': {
-      const order = state.orders.find((o) => o.id === action.orderId)
-      const item = order.items.find((i) => i.id === action.itemId)
-      item.done = !item.done
-      return { ...state, orders: [...state.orders] }
+      return {
+        ...state,
+        orders: state.orders.map((order) =>
+          order.id === action.orderId
+            ? {
+                ...order,
+                items: order.items.map((item) =>
+                  item.id === action.itemId
+                    ? { ...item, done: !item.done }
+                    : item,
+                ),
+              }
+            : order,
+        ),
+      }
     }
     case 'order_advanced': {
       return {
@@ -66,9 +83,10 @@ export function queueReducer(state, action) {
       }
     }
     case 'order_cancelled': {
-      const index = state.orders.findIndex((o) => o.id === action.orderId)
-      state.orders.splice(index, 1)
-      return { ...state, orders: [...state.orders] }
+      return {
+        ...state,
+        orders: state.orders.filter((order) => order.id !== action.orderId),
+      }
     }
     case 'customer_renamed': {
       const order = state.orders.find(
